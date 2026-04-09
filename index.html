@@ -129,11 +129,48 @@
     </div>
   </section>
 
+  <!-- ===== MARKET STATS ===== -->
+  <section id="market-stats" class="market-stats" aria-labelledby="market-stats-heading">
+    <div class="container">
+      <h2 id="market-stats-heading">Market Overview</h2>
+      <p class="market-stats-subtitle">Real-time global cryptocurrency market statistics.</p>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📈</div>
+          <h3>Total Market Cap</h3>
+          <p class="stat-value" id="total-market-cap">$2.65T</p>
+          <p class="stat-change"><span class="change up">+3.2%</span> 24h</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💎</div>
+          <h3>Bitcoin Dominance</h3>
+          <p class="stat-value" id="btc-dominance">52.8%</p>
+          <p class="stat-change"><span class="change up">+0.5%</span> 24h</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔄</div>
+          <h3>24h Trading Volume</h3>
+          <p class="stat-value" id="24h-volume">$85B</p>
+          <p class="stat-change"><span class="change up">+12.7%</span> 24h</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏪</div>
+          <h3>Active Cryptocurrencies</h3>
+          <p class="stat-value" id="active-cryptos">13,980</p>
+          <p class="stat-change">Live markets</p>
+        </div>
+      </div>
+      <div class="market-details">
+        <p>Data powered by CoinGecko API • Updates every 5 minutes</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== SUPPORTED COINS ===== -->
   <section id="coins" class="coins" aria-labelledby="coins-heading">
     <div class="container">
       <h2 id="coins-heading">Popular Cryptocurrencies</h2>
-      <p class="coins-subtitle">Trade a wide range of digital assets with deep liquidity.</p>
+      <p class="coins-subtitle">Trade a wide range of digital assets with deep liquidity. <span class="last-updated">Data updates every minute.</span></p>
       <div class="coins-grid">
         <div class="coin-card">
           <div class="coin-icon">₿</div>
@@ -163,6 +200,46 @@
           <p class="coin-price">$0.52</p>
           <p class="change up">+3.1%</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CRYPTO NEWS ===== -->
+  <section id="news" class="news" aria-labelledby="news-heading">
+    <div class="container">
+      <h2 id="news-heading">Latest Cryptocurrency News</h2>
+      <p class="news-subtitle">Stay informed with the latest developments in the crypto world.</p>
+      <div class="news-grid">
+        <div class="news-card">
+          <div class="news-source">CoinTelegraph</div>
+          <h3>Bitcoin ETFs See Record Inflows</h3>
+          <p class="news-excerpt">Spot Bitcoin ETFs continue to attract institutional investors with record daily inflows surpassing $1.2 billion.</p>
+          <div class="news-meta">
+            <span class="news-time">2 hours ago</span>
+            <a href="#" class="news-link">Read more →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-source">Decrypt</div>
+          <h3>Ethereum Layer 2 Solutions Grow</h3>
+          <p class="news-excerpt">Total value locked in Ethereum Layer 2 solutions reaches new all-time high as scaling solutions gain adoption.</p>
+          <div class="news-meta">
+            <span class="news-time">5 hours ago</span>
+            <a href="#" class="news-link">Read more →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-source">CryptoSlate</div>
+          <h3>Regulatory Developments in Europe</h3>
+          <p class="news-excerpt">European Union finalizes MiCA regulations, providing clearer framework for cryptocurrency businesses.</p>
+          <div class="news-meta">
+            <span class="news-time">1 day ago</span>
+            <a href="#" class="news-link">Read more →</a>
+          </div>
+        </div>
+      </div>
+      <div class="news-footer">
+        <p>News powered by Firecrawl API • Updated regularly</p>
       </div>
     </div>
   </section>

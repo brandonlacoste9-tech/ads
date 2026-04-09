@@ -364,6 +364,72 @@ img {
   box-shadow: 0 6px 18px rgba(0, 179, 255, 0.3);
 }
 
+/* ---------- Market Stats ---------- */
+.market-stats {
+  background-color: var(--bg-dark);
+  padding-block: 4rem;
+}
+.market-stats h2 {
+  text-align: center;
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.market-stats-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.stat-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform var(--transition), border-color var(--transition);
+}
+.stat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-purple);
+}
+.stat-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.stat-card h3 {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+.stat-change {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.stat-change .change {
+  font-weight: 600;
+}
+.market-details {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 /* ---------- Supported Coins ---------- */
 .coins {
   background-color: var(--bg-card);
@@ -415,6 +481,96 @@ img {
 .coin-card .change {
   font-size: 0.95rem;
   font-weight: 600;
+}
+
+.last-updated {
+  font-size: 0.8rem;
+  color: var(--accent-cyan);
+  font-style: italic;
+}
+
+/* ---------- Crypto News ---------- */
+.news {
+  background-color: var(--bg-dark);
+  padding-block: 4rem;
+}
+.news h2 {
+  text-align: center;
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.news-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.news-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform var(--transition), border-color var(--transition);
+}
+.news-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-cyan);
+}
+.news-source {
+  display: inline-block;
+  background: rgba(0, 179, 255, 0.1);
+  color: var(--accent-cyan);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  margin-bottom: 0.75rem;
+}
+.news-card h3 {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+.news-excerpt {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+.news-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.news-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.news-link {
+  font-size: 0.85rem;
+  color: var(--accent-cyan);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+.news-link:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+.news-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ---------- CTA ---------- */
