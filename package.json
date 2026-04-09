@@ -1,14 +1,17 @@
 {
-  "name": "ads",
-  "version": "0.1.0",
-  "description": "Trades in Quebec – Connecting skilled tradespeople across Quebec.",
+  "name": "cryptohub",
+  "version": "0.2.0",
+  "description": "CryptoHub – Modern cryptocurrency exchange with real-time data and API integrations.",
   "main": "index.html",
   "scripts": {
-    "dev": "live-server --port=3000 --watch=index.html,style.css",
+    "dev": "live-server --port=3000 --watch=index.html,style.css,script.js",
     "start": "npm run dev",
+    "backend": "cd backend && npm start",
+    "backend-dev": "cd backend && npm run dev",
+    "install-all": "npm install && cd backend && npm install",
     "test": "echo \"No tests yet\""
   },
-  "keywords": ["trades", "quebec", "landing-page", "static"],
+  "keywords": ["cryptocurrency", "crypto", "exchange", "bitcoin", "ethereum", "landing-page", "static"],
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
