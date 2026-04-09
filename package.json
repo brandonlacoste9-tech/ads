@@ -1,0 +1,17 @@
+{
+  "name": "ads",
+  "version": "0.1.0",
+  "description": "Trades in Quebec – Connecting skilled tradespeople across Quebec.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server --port=3000 --watch=index.html,style.css",
+    "start": "npm run dev",
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": ["trades", "quebec", "landing-page", "static"],
+  "author": "",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
