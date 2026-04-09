@@ -53,17 +53,27 @@ The server will automatically reload when you change `index.html` or `style.css`
 If you want to use the API integrations (Firecrawl, Apify, CoinGecko), you can run the example backend server:
 
 ```bash
-# Install backend dependencies
+# Install all dependencies (frontend and backend)
 npm run install-all
 
-# Start the backend server (runs on port 3001)
+# Option 1: Run both servers with a single command (recommended)
+npm run dev:all
+
+# Option 2: Run servers in separate terminals
+# Terminal 1 - Backend API (port 3001):
 npm run backend-dev
 
-# In another terminal, start the frontend
+# Terminal 2 - Frontend (port 3000):
 npm run dev
 ```
 
 The backend provides secure API endpoints that your frontend can call to access cryptocurrency data without exposing API keys in the browser.
+
+**Note:** If the backend server is not running, the frontend will automatically fall back to:
+1. Direct CoinGecko API for price data (rate-limited)
+2. Sample news data
+3. Mock market statistics
+This ensures the website remains functional even without the backend.
 
 ### Building
 

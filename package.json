@@ -6,15 +6,25 @@
   "scripts": {
     "dev": "live-server --port=3000 --watch=index.html,style.css,script.js",
     "start": "npm run dev",
+    "dev:all": "concurrently \"npm run dev\" \"npm run backend-dev\"",
     "backend": "cd backend && npm start",
     "backend-dev": "cd backend && npm run dev",
     "install-all": "npm install && cd backend && npm install",
     "test": "echo \"No tests yet\""
   },
-  "keywords": ["cryptocurrency", "crypto", "exchange", "bitcoin", "ethereum", "landing-page", "static"],
+  "keywords": [
+    "cryptocurrency",
+    "crypto",
+    "exchange",
+    "bitcoin",
+    "ethereum",
+    "landing-page",
+    "static"
+  ],
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "live-server": "^1.2.2"
   }
 }
