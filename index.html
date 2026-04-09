@@ -22,10 +22,77 @@
           <li><a href="#features">Features</a></li>
           <li><a href="#coins">Coins</a></li>
           <li><a href="#contact">Contact</a></li>
+          <li class="auth-item">
+            <button id="login-btn" class="btn-auth btn-login">Log In</button>
+            <button id="register-btn" class="btn-auth btn-register">Sign Up</button>
+          </li>
         </ul>
       </nav>
     </div>
   </header>
+
+  <!-- ===== AUTH MODAL ===== -->
+  <div id='auth-modal' class='auth-modal' aria-hidden='true'>
+    <div class='modal-overlay' tabindex='-1' data-micromodal-close>
+      <div class='modal-container' role='dialog' aria-modal='true' aria-labelledby='auth-modal-title'>
+        <button class='modal-close' aria-label='Close modal' data-micromodal-close>×</button>
+        
+        <div class='modal-header'>
+          <h2 id='auth-modal-title' class='modal-title'>Welcome to CryptoHub</h2>
+          <p class='modal-subtitle'>Log in or create an account to track your portfolio</p>
+        </div>
+        
+        <div class='modal-tabs'>
+          <button class='tab-btn active' data-tab='login'>Log In</button>
+          <button class='tab-btn' data-tab='register'>Sign Up</button>
+        </div>
+        
+        <div class='modal-content'>
+          <form id='login-form' class='auth-form active' data-form='login'>
+            <div class='form-group'>
+              <label for='login-username'>Username</label>
+              <input type='text' id='login-username' name='username' required autocomplete='username'>
+            </div>
+            <div class='form-group'>
+              <label for='login-password'>Password</label>
+              <input type='password' id='login-password' name='password' required autocomplete='current-password'>
+            </div>
+            <button type='submit' class='btn btn-primary btn-block'>Log In</button>
+            <p class='form-footer'>
+              Don't have an account? <a href='#' class='switch-to-register'>Sign up</a>
+            </p>
+          </form>
+          
+          <form id='register-form' class='auth-form' data-form='register'>
+            <div class='form-group'>
+              <label for='register-username'>Username</label>
+              <input type='text' id='register-username' name='username' required autocomplete='username'>
+            </div>
+            <div class='form-group'>
+              <label for='register-email'>Email</label>
+              <input type='email' id='register-email' name='email' required autocomplete='email'>
+            </div>
+            <div class='form-group'>
+              <label for='register-password'>Password</label>
+              <input type='password' id='register-password' name='password' required autocomplete='new-password'>
+            </div>
+            <div class='form-group'>
+              <label for='register-confirm-password'>Confirm Password</label>
+              <input type='password' id='register-confirm-password' name='confirmPassword' required autocomplete='new-password'>
+            </div>
+            <button type='submit' class='btn btn-primary btn-block'>Create Account</button>
+            <p class='form-footer'>
+              Already have an account? <a href='#' class='switch-to-login'>Log in</a>
+            </p>
+          </form>
+        </div>
+        
+        <div class='modal-footer'>
+          <p class='modal-note'>By continuing, you agree to our <a href='#'>Terms of Service</a> and <a href='#'>Privacy Policy</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== PRICE TICKER ===== -->
   <div class="price-ticker">

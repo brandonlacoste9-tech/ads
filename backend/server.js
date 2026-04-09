@@ -3,13 +3,37 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const fs = require('fs').promises;
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_change_in_production';
+const USERS_FILE = path.join(__dirname, 'users.json');
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Authentication middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) {
+    return res.status(401).json({ success: false, error: 'Access token required' });
+  }
+  
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ success: false, error: 'Invalid or expired token' });
+    }
+    req.user = user;
+    next();
+  });
+};
 
 // API configurations
 const FIRECRAWL_API_KEY = process.env.FIRECRAWL_API_KEY;
@@ -87,12 +111,19 @@ app.get('/', (req, res) => {
       cryptoPrices: '/api/crypto-prices',
       cryptoNews: '/api/crypto-news',
       marketStats: '/api/market-stats',
+      auth: {
+        register: '/api/auth/register',
+        login: '/api/auth/login',
+        me: '/api/auth/me',
+        portfolio: '/api/user/portfolio'
+      },
       health: '/health'
     },
     services: {
       firecrawl: FIRECRAWL_API_KEY ? 'configured' : 'not configured',
       apify: APIFY_API_TOKEN ? 'configured' : 'not configured',
-      coingecko: 'available'
+      coingecko: 'available',
+      auth: 'available'
     }
   });
 });
@@ -285,6 +316,227 @@ app.get('/api/market-stats', async (req, res) => {
   }
 });
 
+
+
+// Authentication endpoints
+
+// Register new user
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { username, password, email } = req.body;
+    
+    // Validate input
+    if (!username || !password || !email) {
+      return res.status(400).json({ success: false, error: 'Username, password, and email are required' });
+    }
+    
+    // Check if user already exists
+    const usersData = await fs.readFile(USERS_FILE, 'utf8');
+    const users = JSON.parse(usersData);
+    
+    if (users.find(u => u.username === username)) {
+      return res.status(400).json({ success: false, error: 'Username already exists' });
+    }
+    
+    if (users.find(u => u.email === email)) {
+      return res.status(400).json({ success: false, error: 'Email already registered' });
+    }
+    
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Create new user
+    const newUser = {
+      id: Date.now().toString(),
+      username,
+      email,
+      password: hashedPassword,
+      createdAt: new Date().toISOString(),
+      portfolio: [] // Empty portfolio for now
+    };
+    
+    users.push(newUser);
+    await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
+    
+    // Create JWT token
+    const token = jwt.sign(
+      { id: newUser.id, username: newUser.username, email: newUser.email },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+    
+    res.status(201).json({
+      success: true,
+      message: 'User registered successfully',
+      token,
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+        createdAt: newUser.createdAt
+      }
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Login user
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({ success: false, error: 'Username and password are required' });
+    }
+    
+    // Read users
+    const usersData = await fs.readFile(USERS_FILE, 'utf8');
+    const users = JSON.parse(usersData);
+    
+    const user = users.find(u => u.username === username);
+    if (!user) {
+      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+    }
+    
+    // Verify password
+    const passwordValid = await bcrypt.compare(password, user.password);
+    if (!passwordValid) {
+      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+    }
+    
+    // Create JWT token
+    const token = jwt.sign(
+      { id: user.id, username: user.username, email: user.email },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+    
+    res.json({
+      success: true,
+      message: 'Login successful',
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        createdAt: user.createdAt
+      }
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Get current user (protected)
+app.get('/api/auth/me', authenticateToken, async (req, res) => {
+  try {
+    // Read users to get full user data
+    const usersData = await fs.readFile(USERS_FILE, 'utf8');
+    const users = JSON.parse(usersData);
+    const user = users.find(u => u.id === req.user.id);
+    
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        createdAt: user.createdAt,
+        portfolio: user.portfolio || []
+      }
+    });
+  } catch (error) {
+    console.error('Get user error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Example protected endpoint: User portfolio
+app.get('/api/user/portfolio', authenticateToken, async (req, res) => {
+  try {
+    // Read users to get portfolio
+    const usersData = await fs.readFile(USERS_FILE, 'utf8');
+    const users = JSON.parse(usersData);
+    const user = users.find(u => u.id === req.user.id);
+    
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    
+    res.json({
+      success: true,
+      portfolio: user.portfolio || []
+    });
+  } catch (error) {
+    console.error('Portfolio error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Update portfolio (example of protected POST)
+app.post('/api/user/portfolio', authenticateToken, async (req, res) => {
+  try {
+    const { coinId, amount, action } = req.body; // action: 'buy' or 'sell'
+    
+    // Validate input
+    if (!coinId || !amount || !action) {
+      return res.status(400).json({ success: false, error: 'Coin ID, amount, and action are required' });
+    }
+    
+    // Read users
+    const usersData = await fs.readFile(USERS_FILE, 'utf8');
+    const users = JSON.parse(usersData);
+    const userIndex = users.findIndex(u => u.id === req.user.id);
+    
+    if (userIndex === -1) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    
+    // Initialize portfolio if not exists
+    if (!users[userIndex].portfolio) {
+      users[userIndex].portfolio = [];
+    }
+    
+    // Simple portfolio update logic
+    const portfolioItem = users[userIndex].portfolio.find(item => item.coinId === coinId);
+    if (portfolioItem) {
+      if (action === 'buy') {
+        portfolioItem.amount += parseFloat(amount);
+      } else if (action === 'sell') {
+        portfolioItem.amount -= parseFloat(amount);
+        if (portfolioItem.amount < 0) portfolioItem.amount = 0;
+      }
+    } else {
+      if (action === 'buy') {
+        users[userIndex].portfolio.push({
+          coinId,
+          amount: parseFloat(amount),
+          addedAt: new Date().toISOString()
+        });
+      }
+      // If selling a coin not in portfolio, ignore or error
+    }
+    
+    // Save updated users
+    await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
+    
+    res.json({
+      success: true,
+      message: 'Portfolio updated successfully',
+      portfolio: users[userIndex].portfolio
+    });
+  } catch (error) {
+    console.error('Update portfolio error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({

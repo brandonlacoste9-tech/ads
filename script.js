@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
     { id: 'avalanche-2', symbol: 'AVAX', name: 'Avalanche', icon: '❄' }
   ];
 
+  // Authentication state
+  let currentUser = null;
+  let authToken = localStorage.getItem('cryptohub_token');
+
   // Backend API configuration
   const BACKEND_API = 'http://localhost:3001';
   
@@ -35,6 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
       lastUpdatedEl = document.querySelector('.last-updated');
     }
     
+    // Initialize authentication
+    initAuth();
+
     // Fetch initial data
     fetchAllData();
     
